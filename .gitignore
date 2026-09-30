@@ -1,0 +1,18 @@
+# Stata
+*.log
+run_rdrobust.Rout
+*.Rout
+.Rhistory
+*.mlib
+*.ster
+_stata_temp*
+
+# 编辑器 / 系统
+.DS_Store
+Thumbs.db
+.vscode/
+__pycache__/
+.superpowers/
+
+# 临时产物
+examples/reference/_tmp*
