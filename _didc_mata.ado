@@ -103,18 +103,27 @@ real rowvector _didc_side(real colvector y, real colvector z, real scalar h,
     real scalar varc
     varc = s2 * sum(wc:^2)
 
-    /* CCT bias constant B_s = p! e_0' Gamma_s^-1 vartheta_{s,p+1} */
+    /* CCT bias constant.  The leading bias is
+     *   h^(p+1) * [ e_0' Gamma^-1 vartheta_{p+1} ] * mu^(p+1)(0) / (p+1)!
+     * and since mu^(p+1)(0) = (p+1)! beta_{p+1} / b^(p+1) the two cancelling
+     * factors leave NO extra constant here.  An earlier version multiplied by
+     * factorial(p), which is 1 at p = 1 and therefore invisible in the p = 1
+     * validation, and doubled the bias at p = 2. */
     real scalar Bconst
-    Bconst = factorial(p) * (e0 * AA * (X' * (k :* u:^p1)))
+    Bconst = e0 * AA * (X' * (k :* u:^p1))
 
     /* the z-scale (p+1)-th derivative and the resulting bias */
     real scalar deriv, bias
     deriv = sgn * bq[p1 + 1] / b^p1
     bias  = h^p1 * Bconst * deriv
 
-    /* robust weights: the bias-corrected side estimate is linear in y */
+    /* robust weights: the bias-corrected side estimate is linear in y.
+       the coefficient on the q-fit's (p+1)-th coefficient is
+       h^(p+1) * Bconst / b^(p+1); the /b^(p+1) is the map from the
+       u-scale coefficient to the z-scale derivative and must not be
+       dropped here even though it cancels out of the point estimate. */
     real rowvector wr
-    wr = wc - h^p1 * Bconst * sgn * (eP1 * AQQ * (Xq' * diag(kb)))
+    wr = wc - (h^p1 / b^p1) * Bconst * sgn * (eP1 * AQQ * (Xq' * diag(kb)))
 
     return(bb[1], varc, s2 * sum(wr:^2), s2, bias, bb[1] - bias, rows(yy))
 }
@@ -144,14 +153,6 @@ program define _didc_mata, rclass
     }
     if `q' <= `p' {
         display as error "_didc_mata: q() must exceed p()"
-        exit 198
-    }
-    if `p' != 1 {
-        display as error "_didc_mata: the built-in engine reproduces rdrobust exactly for"
-        display as error "      p(1), which is the default.  For higher-order polynomials"
-        display as error "      use engine(rdrobust): the bias correction for p >= 2 is not"
-        display as error "      yet bit-for-bit identical (measured gap of about 6e-04 in"
-        display as error "      the bias-corrected estimate at p=2, q=3)."
         exit 198
     }
 
@@ -228,8 +229,14 @@ void _didc_mata_run(string scalar yv, string scalar zv, real scalar p, real scal
     z = st_data(., zv)
 
     real rowvector R, L
-    R = _didc_side(y, z, hr, br, p, q,  1,  1,            kern)
-    L = _didc_side(y, z, hl, bl, p, q, -1,  (-1)^(p+1),   kern)
+    /* the convention for sgn is fixed EMPIRICALLY against rdrobust: with the
+       running variable oriented as u = side*(z-c)/h, rdrobust's per-side bias
+       carries no orientation sign, at p = 1 and at p = 2.  A from-scratch
+       Taylor expansion suggests (-1)^(p+1) for the below side, and that is what
+       the package used while only p = 1 was supported -- where it is
+       indistinguishable, because (-1)^2 = 1.  It is wrong for p >= 2. */
+    R = _didc_side(y, z, hr, br, p, q,  1,  1,   kern)
+    L = _didc_side(y, z, hl, bl, p, q, -1,  1,   kern)
 
     st_numscalar("_didc_mu_plus",   R[1])
     st_numscalar("_didc_mu_minus",  L[1])

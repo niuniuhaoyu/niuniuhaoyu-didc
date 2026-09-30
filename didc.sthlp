@@ -107,22 +107,32 @@ does.
 {cmd:h()} and {cmd:b()} are supplied it does not call {cmd:rdrobust} at all;
 otherwise {cmd:rdrobust} is used for bandwidth selection only. Its point
 estimates and bias corrections reproduce {cmd:rdrobust} to machine precision at
-{cmd:p(1)} for the triangular, uniform and epanechnikov kernels.
+every polynomial order, for the triangular, uniform and epanechnikov kernels: at
+{cmd:p(2)} the two engines agree to {cmd:8.3e-16} over six quantities at once.
 
 {pstd}
 The two engines differ in how the variance is computed. {cmd:rdrobust} reports
 CCT's asymptotic variance with {it:sigma}{sup:2} estimated by nearest
 neighbours; the built-in engine reports the exact finite-sample variance of the
-same linear functional, computed from the weights of the estimator. Its interval
-is therefore narrower and covers a little less often in finite samples: on the
-paper's model 1 with {cmd:n = 1000} and 150 replications, coverage is 0.920 for
-{cmd:engine(mata)} against 0.960 for {cmd:engine(rdrobust)}. That is why
-{cmd:rdrobust} remains the default.
+same linear functional, computed from the weights of the estimator. The two are
+numerically equivalent where it matters: the robust standard error is 0.94 times
+{cmd:rdrobust}'s, the point estimates agree to machine precision, and 95%
+coverage is 0.953 against 0.960 over 150 replications at {cmd:n = 1000} on the
+paper's model 1 — a difference well inside Monte Carlo error. The residual
+difference in the standard error comes from the two {it:sigma}{sup:2}
+conventions.
 
-{warning:{cmd:engine(mata)} supports {cmd:p(1)} only.} At {cmd:p(2)} the bias
-correction differs from {cmd:rdrobust} by about {cmd:6e-04}, so the built-in
-engine refuses the request rather than returning a number that is close but not
-identical. Use {cmd:engine(rdrobust)} for higher-order polynomials.
+{pstd}
+{cmd:engine(rdrobust)} remains the default because it is the reference
+implementation and matches published {cmd:rdrobust} output digit for digit,
+which is what a reader checking your numbers will run.
+
+{pstd}
+Both engines support any polynomial order. An earlier version of the built-in
+engine refused {cmd:p(2)} and above; that restriction was lifted in 0.2.1, when
+two errors that are invisible at {cmd:p(1)} were found and fixed — a spurious
+{cmd:factorial(p)} in the bias constant and a spurious orientation sign on the
+below side, both of which happen to be the identity at {cmd:p(1)}.
 
 {pstd}
 The engine is recorded in {cmd:e(engine)}.

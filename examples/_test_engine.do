@@ -69,11 +69,11 @@ foreach case in 1 2 3 {
     if `case' == 2 local k "uniform"
     if `case' == 2 local h 0.4
     if `case' == 2 local b 0.6
-    if `case' == 3 local p 1
-    if `case' == 3 local q 2
-    if `case' == 3 local k "epanechnikov"
-    if `case' == 3 local h 0.3
-    if `case' == 3 local b 0.5
+    if `case' == 3 local p 2
+    if `case' == 3 local q 3
+    if `case' == 3 local k "triangular"
+    if `case' == 3 local h 0.5
+    if `case' == 3 local b 0.8
 
     *---- rdrobust on the flat (dy, z) data ---------------------------
     use `flat', clear
@@ -122,18 +122,31 @@ foreach case in 1 2 3 {
 _t point_estimates_match_rdrobust 1 `acc_ok'
 
 *-----------------------------------------------------------------------------
-* the boundary of the engine: p >= 2 is refused rather than approximated
+* p >= 2 is supported as well; both engines must still agree exactly
 *-----------------------------------------------------------------------------
-display as txt _n "== part 1b: the engine refuses p >= 2 =="
+display as txt _n "== part 1b: p = 2 is accepted and still agrees exactly =="
+use `flat', clear
+rename dy y
+rename zc z
+quietly rdrobust y z, c(0) p(2) q(3) h(0.5) b(0.8)
+local rd2 = e(tau_bc)
+local rd2b = e(bias_l)
+
 use "D:/OpenCode/didc/data/didc_sim1.dta", clear
 capture quietly didc y, runvar(z) time(t) pre(0) post(1) id(id) ///
     engine(mata) p(2) q(3) h(0.5) b(0.8) nolemma1
 local rc = _rc
-_t engine_mata_rejects_p2 198 `rc'
-capture quietly didc y, runvar(z) time(t) pre(0) post(1) id(id) ///
-    engine(rdrobust) p(2) q(3)
-local rc = _rc
-_t engine_rdrobust_accepts_p2 0 `rc'
+_t engine_mata_accepts_p2 0 `rc'
+if `rc' == 0 {
+    local my2  = e(tau_didc_bc)
+    local my2b = e(bias_below)
+    display as txt "  tau_bc at p=2: mata " %16.12f `my2' as txt "   rdrobust " %16.12f `rd2'
+    display as txt "  bias_l at p=2: mata " %16.12f `my2b' as txt "   rdrobust " %16.12f `rd2b'
+    local ok = (abs(`my2' - `rd2') < 1e-10)
+    _t p2_tau_bc_agrees 1 `ok'
+    local ok = (abs(`my2b' - `rd2b') < 1e-10)
+    _t p2_below_bias_agrees 1 `ok'
+}
 
 *==============================================================================
 * Part 2: coverage of the built-in engine's interval

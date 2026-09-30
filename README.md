@@ -44,7 +44,7 @@ to be reproducible, or the development version if you want the latest:
 
 ```stata
 * pinned release (recommended)
-net install didc, from("https://raw.githubusercontent.com/niuniuhaoyu/niuniuhaoyu-didc/v0.2.0/") replace
+net install didc, from("https://raw.githubusercontent.com/niuniuhaoyu/niuniuhaoyu-didc/v0.2.1/") replace
 
 * development version
 net install didc, from("https://raw.githubusercontent.com/niuniuhaoyu/niuniuhaoyu-didc/main/") replace
@@ -72,19 +72,26 @@ without them, `rdrobust` is used for **bandwidth selection only**.
 
 | | `engine(rdrobust)` | `engine(mata)` |
 |---|---|---|
-| point estimate and bias correction | reference | **identical to 1e-16** for `p(1)`, verified for triangular, uniform and epanechnikov kernels |
+| point estimate and bias correction | reference | **identical to 1e-16** for `p(1)` and `p(2)`, verified for triangular, uniform and epanechnikov kernels |
 | variance | CCT's asymptotic variance, `sigma^2` by nearest neighbours | the **exact finite-sample variance** of the same linear functional |
-| coverage, model 1, `n=1000`, 150 replications | 0.960 | 0.920 |
+| robust standard error, model 1 | reference | 0.94 times `rdrobust`'s |
+| coverage, model 1, `n=1000`, 150 replications | 0.960 | **0.953** |
 | bandwidth selection | `rdrobust` | `rdrobust`, or the user's `h()` and `b()` |
-| `p(2)` and above | supported | refused, with a pointer to `engine(rdrobust)` |
+| polynomial order | any `p` | any `p` |
 
-The built-in engine's interval is narrower, because its variance is exact for
-the fixed design rather than an asymptotic approximation, and it therefore
-covers a little less often in the simulation above. That is why
-`engine(rdrobust)` remains the default and why the mata interval should be read
-as complementary rather than as a drop-in replacement. Closing that gap, and
-extending the engine to `p >= 2`, is the next piece of work; see
-`docs/specs/2026-09-30-didc-v2-design.md`.
+The two engines are numerically equivalent where it matters: the built-in engine
+reproduces every point estimate to machine precision — including at `p(2)`,
+where the two engines agree to `8.3e-16` over six quantities at once — and its
+interval covers 0.953 of the time against 0.960 for `rdrobust`, a difference
+well inside Monte Carlo error. The small remaining difference in the standard
+error itself, 0.94, comes from the two `sigma^2` conventions — CCT estimate it
+by nearest neighbours, the built-in engine from the fit's own residuals.
+`engine(rdrobust)` stays the default because it is the reference implementation
+and matches published `rdrobust` output digit for digit, which is what a reader
+checking your numbers will run.
+
+Closing the standard-error gap entirely and writing a bandwidth selector are the
+next pieces of work; see `docs/specs/2026-09-30-didc-v2-design.md`.
 
 ## Quick start
 

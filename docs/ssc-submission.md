@@ -15,7 +15,7 @@ the text to send.
 |---|---|
 | a `.pkg` file describing the package | `didc.pkg` |
 | one `.ado` file per command | `didc.ado`, `didc_test.ado`, `didc_bounds.ado` |
-| internal helper `.ado` files | `_didc_prep.ado`, `_didc_lpoly.ado`, `_didc_ks.ado`, `_didc_display.ado` |
+| internal helper `.ado` files | `_didc_prep.ado`, `_didc_lpoly.ado`, `_didc_mata.ado`, `_didc_ks.ado`, `_didc_display.ado` |
 | a `.sthlp` help file for every documented command | `didc.sthlp`, `didc_test.sthlp`, `didc_bounds.sthlp` |
 | no dependency that SSC will not install | depends on `rdrobust`, itself on SSC |
 | a stated license | AGPL-3.0, in `LICENSE` |
@@ -57,8 +57,8 @@ following text.
 > The package is licensed AGPL-3.0.
 >
 > Attached: didc.pkg, didc.ado, didc_test.ado, didc_bounds.ado,
-> _didc_prep.ado, _didc_lpoly.ado, _didc_ks.ado, _didc_display.ado,
-> didc.sthlp, didc_test.sthlp, didc_bounds.sthlp.
+> _didc_prep.ado, _didc_lpoly.ado, _didc_mata.ado, _didc_ks.ado,
+> _didc_display.ado, didc.sthlp, didc_test.sthlp, didc_bounds.sthlp.
 >
 > Thank you,
 > Haoyu Niu
