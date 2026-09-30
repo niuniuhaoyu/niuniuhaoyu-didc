@@ -1,0 +1,46 @@
+cff-version: 1.2.0
+message: >-
+  If you use this software in your research, please cite both the method paper
+  and the software itself.
+title: didc
+abstract: >-
+  Difference-in-discontinuities estimation, validity testing and partial
+  identification for Stata. In a regression-discontinuity design where a
+  confounding policy is assigned by the same cutoff as the treatment of
+  interest, the continuity assumption underlying standard RD fails; didc
+  recovers the effect from the change in the outcome over time at the cutoff,
+  and provides the two validity tests and the bounded-variation bounds of
+  Picchetti, Pinto & Shinoki (2026).
+authors:
+  - family-names: Niu
+    given-names: Haoyu
+    email: 3522359513@qq.com
+    affiliation: City University of Macau
+version: 0.1.0
+date-released: "2026-09-30"
+license: AGPL-3.0
+repository-code: https://github.com/niuniuhaoyu/niuniuhaoyu-didc
+url: https://github.com/niuniuhaoyu/niuniuhaoyu-didc
+keywords:
+  - difference-in-discontinuities
+  - regression discontinuity
+  - difference-in-differences
+  - causal inference
+  - policy evaluation
+  - partial identification
+  - sensitivity analysis
+  - Stata
+preferred-citation:
+  type: article
+  title: >-
+    Difference-in-Discontinuities: Estimation, Inference and Validity Tests
+  authors:
+    - family-names: Picchetti
+      given-names: Pedro
+    - family-names: Pinto
+      given-names: Cristine C. X.
+    - family-names: Shinoki
+      given-names: Stéphanie T.
+  year: 2026
+  eprint: arXiv:2405.18531
+  url: https://arxiv.org/abs/2405.18531
