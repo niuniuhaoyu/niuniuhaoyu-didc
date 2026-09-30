@@ -37,14 +37,25 @@ cancels out of the difference.
 ```stata
 * dependency
 ssc install rdrobust, replace
+```
 
-* this package
-net install didc, from("https://raw.githubusercontent.com/niuniuhaoyu/didc/main/") replace
+Then install `didc` itself. Use the **pinned release** if you want your results
+to be reproducible, or the development version if you want the latest:
+
+```stata
+* pinned release (recommended)
+net install didc, from("https://raw.githubusercontent.com/niuniuhaoyu/niuniuhaoyu-didc/v0.1.0/") replace
+
+* development version
+net install didc, from("https://raw.githubusercontent.com/niuniuhaoyu/niuniuhaoyu-didc/main/") replace
 ```
 
 `didc` needs a clear rejection of a common failure mode: if `rdrobust` is
 missing it says so and tells you how to install it, rather than failing with
 `r(111)`.
+
+Check the installation with `which didc`, `which didc_test` and
+`which didc_bounds`, then run `help didc`.
 
 ## Quick start
 
