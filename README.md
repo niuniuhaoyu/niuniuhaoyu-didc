@@ -245,9 +245,28 @@ and the slope/joint tests for `test(wald)`, and `r(ks_above)`, `r(ks_below)`,
 | the confounder is removed: `didc` recovers `tau` while a post-period-only RD returns `c + tau` | `examples/_test_confounder.do` | as predicted |
 | **independent** local-linear estimator (weighted least squares via `regress`, no `rdrobust`) | `examples/_test_vs_wls.do` | agrees to `0.0000000000` for both kernel types |
 | rebuilt `dY` through `reshape` rather than the package's own path | `examples/_test_vs_wls.do` | identical |
-| Monte Carlo bias and coverage, models 1-4 | `examples/_test_mc_coverage.do` | model 1: bias `-0.002`, coverage `0.944`, plain post-period RD bias `0.542` and coverage `0.000`; model 2: coverage `0.944`, plain RD `0.042` / `0.846` against the paper's `0.043` / `0.861` |
-| size and power of both validity tests | `examples/_test_validity_size.do` | KS: size `0.050`, power `1.000`; Wald: size `0.033`, power `1.000` |
+| Monte Carlo bias and coverage, models 1-4 | `examples/_test_mc_coverage.do` | see below |
+| size and power of both validity tests | `examples/_test_validity_size.do` | KS: size `0.050`, power `1.000`; Wald: size `0.025`, power `0.990` |
 | closed-form bounds, empty sets, breakdown values | `examples/_test_bounds.do` | cell-by-cell exact |
+
+Monte Carlo, 200 replications, `n = 1000`, `tau = 0`, against the paper's
+Tables 1-4. "RD" is a plain regression discontinuity run on the post-treatment
+cross-section, i.e. ignoring the confounder:
+
+| model | didc bias | RMSE | coverage | RD bias | RD coverage | paper: didc bias / coverage |
+|---|---|---|---|---|---|---|
+| 1, confounder, fixed forms | -0.004 | 0.052 | **0.945** | 0.541 | **0.000** | -0.002 / 0.944 |
+| 2, no confounder, fixed forms | -0.004 | 0.052 | 0.945 | 0.041 | 0.860 | -0.003 / 0.944 |
+| 3, confounder, time-varying forms | -0.008 | 0.052 | **0.950** | 0.541 | **0.000** | -0.001 / 0.937 |
+| 4, no confounder, time-varying forms | -0.008 | 0.052 | 0.950 | 0.041 | 0.860 | -0.008 / 0.937 |
+
+The paper's Table 2 reports RD bias 0.043 and coverage 0.861 for model 2; the
+same design here gives 0.041 and 0.860. The model 1 and 3 RD bias is smaller
+here (0.541 against 1.043) because the paper does not report the magnitude of
+the confounder in its simulation, and this package uses 0.5. The qualitative
+point is reproduced exactly: with a confounder at the cutoff the plain RD is
+badly biased and its interval never covers, while `didc` is centred and covers
+at about the nominal rate even when the functional forms change over time.
 
 Run the whole suite at once with:
 

@@ -62,12 +62,13 @@ arXiv:2405.18531.
   misspecified against the strongly curved data-generating process.
 - Measured behaviour, 200-300 Monte Carlo replications on the paper's designs:
   the KS test has size 0.050 and power 1.000; the corrected Wald test has size
-  0.033 and power 1.000. On model 1 the DiDC estimator has bias -0.002 and 95%
-  coverage 0.944 while a plain post-period RD has bias 0.542 and coverage
-  0.000; on model 2 the corresponding RD numbers are 0.042 and 0.846, against
-  0.043 and 0.861 in the paper's Table 2. The paper does not report the size of
-  the confounder in model 1, so the magnitude of the plain RD's bias depends on
-  the value chosen here.
+  0.025 and power 0.990. The DiDC estimator has bias -0.004 and 95% coverage
+  0.945 on model 1 and -0.008 / 0.950 on model 3, against the paper's
+  -0.002 / 0.944 and -0.001 / 0.937. On the same data a plain post-treatment RD
+  has bias 0.541 and coverage 0.000 in models 1 and 3, and 0.041 / 0.860 in
+  models 2 and 4 against the paper's 0.043 / 0.861 for model 2. The paper does
+  not report the magnitude of the confounder in model 1, so the size of the
+  plain RD's bias depends on the value chosen here (0.5).
 - Decisions taken where the source paper is internally inconsistent or silent
   are recorded in `docs/research-notes.md`, Section 9, and summarised in the
   README. The substantive ones: equation (7) is estimated with the level term
