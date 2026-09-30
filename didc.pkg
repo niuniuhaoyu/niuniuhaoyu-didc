@@ -26,6 +26,7 @@ f didc_test.ado
 f didc_bounds.ado
 f _didc_prep.ado
 f _didc_lpoly.ado
+f _didc_mata.ado
 f _didc_ks.ado
 f _didc_display.ado
 f didc.sthlp

@@ -5,6 +5,56 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2026-09-30
+
+### Added
+
+- **A built-in estimation engine.** `didc ..., engine(mata)` estimates the local
+  polynomial fit, the bias correction and the variance without calling
+  `rdrobust`, using a kernel written in Mata (`_didc_mata.ado`). With `h()` and
+  `b()` supplied, no external package is involved at all; without them,
+  `rdrobust` is used for bandwidth selection only. `engine(rdrobust)` remains
+  the default and behaves exactly as in 0.1.0.
+- `examples/_test_engine.do`, which compares the two engines quantity by
+  quantity and measures their coverage by Monte Carlo. Added to the suite run
+  by `examples/_test_all.do`.
+- `e(bias_above)`, `e(bias_below)`, `e(engine)`, `e(kernel)`, `e(p_used)`,
+  `e(q_used)`, `e(level_used)`.
+
+### Design notes
+
+- Every quantity the estimator needs is a linear functional of the outcome with
+  known weights, so the built-in engine computes the variance directly from
+  those weights, `Var(tau) = sum_s s2_s sum_i w_si^2`. That is the **exact**
+  finite-sample variance for a fixed design and it avoids CCT's closed-form
+  asymptotic algebra altogether.
+- **Point estimates agree exactly.** At the same bandwidths, orders and kernel,
+  the built-in engine reproduces `rdrobust`'s conventional estimate, corrected
+  estimate, both side intercepts and both side biases to `2.8e-16` for the
+  triangular kernel, `5.0e-16` for the uniform kernel and `2.8e-16` for
+  epanechnikov, over six quantities at once.
+- **The variance does not, and that is documented rather than hidden.**
+  `rdrobust` reports CCT's asymptotic variance with `sigma^2` estimated by
+  nearest neighbours; the built-in engine reports the exact finite-sample
+  variance. Its interval is narrower (the ratio of robust standard errors is
+  about 0.83 on the paper's model 1) and its coverage is 0.920 against 0.960 for
+  `rdrobust` over 150 replications at `n = 1000`. That is why `rdrobust` stays
+  the default. An attempt to back out the `sigma^2` implied by `rdrobust` from
+  its conventional and robust standard errors produced a negative value, which
+  shows that its robust variance is not a weighted sum of the two one-sided
+  variances but CCT's closed form, including the extra term for estimating the
+  bias.
+- **`p(2)` and above are refused by the built-in engine** rather than
+  approximated. The bias correction reproduces `rdrobust` exactly at `p(1)`; at
+  `p(2), q(3)` it differs by about `6e-04`, most likely because CCT's bias
+  formula uses theoretical rather than empirical kernel moments. `engine(mata)`
+  therefore exits with a pointer to `engine(rdrobust)`, so no user can
+  accidentally publish a slightly different number.
+- `docs/specs/2026-09-30-didc-v2-design.md` records what v2a delivered, the
+  measurements above, and what v2b still owes: closing the coverage gap,
+  lifting the `p >= 2` restriction, writing a bandwidth selector, and extending
+  the built-in engine to `design(rcs)`.
+
 ## [0.1.0] - 2026-09-30
 
 First release. Difference-in-discontinuities estimation, validity testing and

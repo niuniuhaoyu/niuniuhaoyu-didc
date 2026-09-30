@@ -5,7 +5,10 @@ program define _didc_display
     version 17
 
     local design   "`e(design)'"
-    local lev      = e(level)
+    local lev      = e(level_used)
+    local kern     "`e(kernel)'"
+    local pord     = e(p_used)
+    local qord     = e(q_used)
     local tau      = e(tau_didc)
     local taubc    = e(tau_didc_bc)
     local se       = e(se_didc)
@@ -41,9 +44,10 @@ program define _didc_display
     display as txt "Difference-in-discontinuities estimation"
     display as txt "Estimator: `what'"
     display as txt "Cutoff c = " as result %8.4g `c' as txt ///
-        "    Kernel = " as result "`e(kernel)'" as txt ///
-        "    Order est. (p) = " as result "`e(p)'" as txt ///
-        "    Order bias (q) = " as result "`e(q)'"
+        "    Kernel = " as result "`kern'" as txt ///
+        "    Order est. (p) = " as result "`pord'" as txt ///
+        "    Order bias (q) = " as result "`qord'" as txt ///
+        "    Engine = " as result "`e(engine)'"
     if "`design'" == "panel" {
         display as txt "Units  = " as result %8.0g `n_units' as txt ///
             "    below c = " as result %8.0g `n_l' as txt ///

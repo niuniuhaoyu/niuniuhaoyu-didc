@@ -44,7 +44,7 @@ to be reproducible, or the development version if you want the latest:
 
 ```stata
 * pinned release (recommended)
-net install didc, from("https://raw.githubusercontent.com/niuniuhaoyu/niuniuhaoyu-didc/v0.1.0/") replace
+net install didc, from("https://raw.githubusercontent.com/niuniuhaoyu/niuniuhaoyu-didc/v0.2.0/") replace
 
 * development version
 net install didc, from("https://raw.githubusercontent.com/niuniuhaoyu/niuniuhaoyu-didc/main/") replace
@@ -56,6 +56,35 @@ missing it says so and tells you how to install it, rather than failing with
 
 Check the installation with `which didc`, `which didc_test` and
 `which didc_bounds`, then run `help didc`.
+
+### The built-in engine
+
+`didc` ships two estimation engines. `engine(rdrobust)`, the default, delegates
+local polynomial estimation and inference to `rdrobust`, as the source paper
+does. `engine(mata)` uses a self-contained kernel written in Mata:
+
+```stata
+didc y, runvar(z) time(t) pre(0) post(1) id(id) engine(mata) h(0.4) b(0.6)
+```
+
+With `h()` and `b()` supplied, `engine(mata)` does not call `rdrobust` at all;
+without them, `rdrobust` is used for **bandwidth selection only**.
+
+| | `engine(rdrobust)` | `engine(mata)` |
+|---|---|---|
+| point estimate and bias correction | reference | **identical to 1e-16** for `p(1)`, verified for triangular, uniform and epanechnikov kernels |
+| variance | CCT's asymptotic variance, `sigma^2` by nearest neighbours | the **exact finite-sample variance** of the same linear functional |
+| coverage, model 1, `n=1000`, 150 replications | 0.960 | 0.920 |
+| bandwidth selection | `rdrobust` | `rdrobust`, or the user's `h()` and `b()` |
+| `p(2)` and above | supported | refused, with a pointer to `engine(rdrobust)` |
+
+The built-in engine's interval is narrower, because its variance is exact for
+the fixed design rather than an asymptotic approximation, and it therefore
+covers a little less often in the simulation above. That is why
+`engine(rdrobust)` remains the default and why the mata interval should be read
+as complementary rather than as a drop-in replacement. Closing that gap, and
+extending the engine to `p >= 2`, is the next piece of work; see
+`docs/specs/2026-09-30-didc-v2-design.md`.
 
 ## Quick start
 
@@ -183,18 +212,24 @@ evidence against Assumption 4, and `didc_bounds` says so instead of erroring.
 | component | how it is produced | original? |
 |---|---|---|
 | panel/rcs handling, `dY` construction, time-invariance check | written here | yes |
-| point estimate, MSE-optimal bandwidth, bias correction, robust CI | **delegated to `rdrobust`** | no |
+| point estimate, MSE-optimal bandwidth, bias correction, robust CI | `engine(rdrobust)` delegates to `rdrobust`; `engine(mata)` computes the estimator itself | no / **yes** |
 | Lemma 1 self-check | written here | yes |
 | stacked-RD Wald test | written here | yes, no precedent in Stata |
 | bootstrap KS test | written here | yes, no precedent in Stata |
 | partial identification, breakdown values, empty-set detection | written here | yes, no precedent in Stata |
 
-Delegating the estimation kernel is what the source paper does — it explicitly
+The **built-in Mata engine** (`_didc_mata.ado`, from v0.2.0) computes the local
+polynomial fit, the bias correction and the variance without calling
+`rdrobust`. Its point estimates reproduce `rdrobust` to `1e-16` for `p(1)`
+across three kernels, which is the check in `examples/_test_engine.do`.
+Bandwidth selection is still delegated, and `p(2)` and above are refused rather
+than approximated; see the engine table above.
+
+Delegating the estimation kernel was what the source paper does — it explicitly
 builds on Calonico, Cattaneo & Titiunik (2014). Hand-rolling the bandwidth
-selector and the robust variance would introduce differences that nobody could
-verify, and would destroy the one thing this package can offer that a quick port
-cannot: an **independent numerical check** of the estimates. See
-`docs/specs/2026-09-30-didc-design.md`, section 5.1.
+selector and the robust variance produces differences that nobody could verify
+against the published numbers, which is why the mata engine keeps the
+`rdrobust` path alongside it and reports the measured gap.
 
 Self-contained estimation (bandwidth selector, local polynomial, bias
 correction and robust variance implemented in Mata) is on the roadmap for v2;

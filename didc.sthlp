@@ -19,6 +19,7 @@
 {cmdab:bwselect(}{it:rule}{cmd:)} {cmdab:h(}{it:#}{cmd:)} {cmdab:b(}{it:#}{cmd:)}
 {cmdab:level(}{it:#}{cmd:)}
 {hang2}{cmdab:graph(}{it:name}{cmd:)} {cmd:nolemma1}
+{hang2}{cmdab:engine(}{it:rdrobust}{cmd:|}{it:mata}{cmd:)}
 
 {title:Description}
 
@@ -94,6 +95,37 @@ stores it under {it:name}. Available with {cmd:design(panel)} only.
 {cmd:nolemma1} skips the Lemma 1 self-check. The check costs three extra
 regressions and adds nothing to the estimate; it is on by default because it is
 the cheap way to notice that something has gone wrong.
+
+{phang}
+{cmd:engine(rdrobust|mata)} selects the estimation engine. The default,
+{cmd:engine(rdrobust)}, delegates the local polynomial fit, the bias
+correction and the variance to {help rdrobust}, exactly as the source paper
+does.
+
+{pstd}
+{cmd:engine(mata)} uses a self-contained kernel written in Mata. When
+{cmd:h()} and {cmd:b()} are supplied it does not call {cmd:rdrobust} at all;
+otherwise {cmd:rdrobust} is used for bandwidth selection only. Its point
+estimates and bias corrections reproduce {cmd:rdrobust} to machine precision at
+{cmd:p(1)} for the triangular, uniform and epanechnikov kernels.
+
+{pstd}
+The two engines differ in how the variance is computed. {cmd:rdrobust} reports
+CCT's asymptotic variance with {it:sigma}{sup:2} estimated by nearest
+neighbours; the built-in engine reports the exact finite-sample variance of the
+same linear functional, computed from the weights of the estimator. Its interval
+is therefore narrower and covers a little less often in finite samples: on the
+paper's model 1 with {cmd:n = 1000} and 150 replications, coverage is 0.920 for
+{cmd:engine(mata)} against 0.960 for {cmd:engine(rdrobust)}. That is why
+{cmd:rdrobust} remains the default.
+
+{warning:{cmd:engine(mata)} supports {cmd:p(1)} only.} At {cmd:p(2)} the bias
+correction differs from {cmd:rdrobust} by about {cmd:6e-04}, so the built-in
+engine refuses the request rather than returning a number that is close but not
+identical. Use {cmd:engine(rdrobust)} for higher-order polynomials.
+
+{pstd}
+The engine is recorded in {cmd:e(engine)}.
 
 {title:Assumptions}
 

@@ -27,7 +27,7 @@ display as txt "  didc test suite"
 display as txt "{hline 78}"
 
 foreach f in _test_prep _test_closedform _test_confounder _test_vs_wls ///
-             _test_bounds _test_validity_size {
+             _test_bounds _test_engine _test_validity_size {
     display as txt _n ">>> `f'.do"
     capture noisily do "`f'.do"
     if _rc {

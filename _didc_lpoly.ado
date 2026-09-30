@@ -69,6 +69,10 @@ program define _didc_lpoly, rclass
     return scalar mu_plus  = `BPr'[1,1]
     return scalar mu_minus = `BPl'[1,1]
 
+    *---- the estimated bias on each side, for cross-engine checks -------
+    return scalar bias_above = e(bias_r)
+    return scalar bias_below = e(bias_l)
+
     return scalar p = e(p)
     return scalar q = e(q)
     return local  kernel   "`e(kernel)'"
