@@ -39,7 +39,7 @@ cancels out of the difference.
 ssc install rdrobust, replace
 
 * this package
-net install didc, from("https://raw.githubusercontent.com/niuniuhaoyu/niuniuhaoyu-didc/main/") replace
+net install didc, from("https://raw.githubusercontent.com/niuniuhaoyu/didc/main/") replace
 ```
 
 `didc` needs a clear rejection of a common failure mode: if `rdrobust` is
