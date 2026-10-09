@@ -3,6 +3,7 @@
 {vieweralsosee "[R] rdrobust" "mansection R:rdrobust"}{...}
 {vieweralsosee "didc_test" "help didc_test"}{...}
 {vieweralsosee "didc_bounds" "help didc_bounds"}{...}
+{vieweralsosee "didc_zh (中文)" "help didc_zh"}{...}
 {title:Title}
 
 {phang}

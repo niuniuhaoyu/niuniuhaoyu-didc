@@ -1,6 +1,7 @@
 {smcl}
 {* *! version 0.2.1  30sep2026}{...}
 {vieweralsosee "didc" "help didc"}{...}
+{vieweralsosee "didc_zh (中文)" "help didc_zh"}{...}
 {title:Title}
 
 {phang}
