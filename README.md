@@ -1,5 +1,7 @@
 # didc
 
+[English](README.md) | [简体中文](README_zh.md)
+
 **Difference-in-Discontinuities for Stata**
 
 [![Stata 17+](https://img.shields.io/badge/Stata-17%2B-blue.svg)](https://www.stata.com/)
