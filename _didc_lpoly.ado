@@ -1,4 +1,4 @@
-*! _didc_lpoly 0.1.0  2026-09-30
+*! _didc_lpoly 0.2.1  2026-09-30
 *! Internal: run one local-polynomial RD on (outcome, running variable) and
 *! return the pieces didc needs, including the left and right intercepts of
 *! the CONVENTIONAL local polynomial (which are Delta Y^- and Delta Y^+ in

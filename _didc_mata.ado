@@ -1,4 +1,4 @@
-*! _didc_mata 0.2.0  2026-09-30
+*! _didc_mata 0.2.1  2026-09-30
 *! Internal: the self-contained local polynomial engine for didc.
 *!
 *! This file computes, without calling rdrobust, everything didc needs from a

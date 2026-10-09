@@ -1,5 +1,5 @@
 {smcl}
-{* *! version 0.1.0  30sep2026}{...}
+{* *! version 0.2.1  30sep2026}{...}
 {vieweralsosee "[R] rdrobust" "mansection R:rdrobust"}{...}
 {vieweralsosee "didc_test" "help didc_test"}{...}
 {vieweralsosee "didc_bounds" "help didc_bounds"}{...}

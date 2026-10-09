@@ -10,7 +10,10 @@ d partial-identification bounds developed in the source paper:
 d
 d   didc          local polynomial DiDC estimator, bias-corrected robust
 d                 inference, and a built-in check of the equivalence between
-d                 "the RD of the differences" and "the difference of the RDs"
+d                 "the RD of the differences" and "the difference of the RDs";
+d                 engine(rdrobust) (default, the reference) or engine(mata)
+d                 (a self-contained Mata kernel; point estimates match
+d                 rdrobust to 1e-16 for p(1)/p(2))
 d   didc_test     (i) stacked-RD Wald test of time-invariant confounding, and
 d                 (ii) bootstrap Kolmogorov-Smirnov test of time-invariant
 d                 conditional means

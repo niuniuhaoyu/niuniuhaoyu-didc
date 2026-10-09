@@ -1,4 +1,4 @@
-*! _didc_ks 0.1.0  2026-09-30
+*! _didc_ks 0.2.1  2026-09-30
 *! Internal: two-sample Kolmogorov-Smirnov test of time-invariance of the
 *! conditional mean functions (Section 4.2 of Picchetti, Pinto & Shinoki 2026).
 *!

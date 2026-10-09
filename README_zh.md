@@ -6,7 +6,7 @@
 
 [![Stata 17+](https://img.shields.io/badge/Stata-17%2B-blue.svg)](https://www.stata.com/)
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](LICENSE)
-[![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-green.svg)](CHANGELOG.md)
+[![Version: 0.2.1](https://img.shields.io/badge/Version-0.2.1-green.svg)](CHANGELOG.md)
 [![Requires: rdrobust](https://img.shields.io/badge/requires-rdrobust-informational.svg)](https://rdpackages.github.io/rdrobust/)
 
 `didc` 为 Stata 提供**差中差断点（DiDC）**的估计、推断、效度检验与部分识别，遵循
@@ -313,3 +313,7 @@ do "examples/_test_all.do"        // 或： do "examples/_test_all.do" 1000
 ## 许可
 
 AGPL-3.0。见 `LICENSE`。
+
+---
+
+[English](README.md) | [简体中文](README_zh.md)

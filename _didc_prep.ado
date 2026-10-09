@@ -1,4 +1,4 @@
-*! _didc_prep 0.1.0  2026-09-30
+*! _didc_prep 0.2.1  2026-09-30
 *! Internal helpers for didc: input validation and construction of the
 *! differenced outcome.  Not intended to be called directly by users.
 *!

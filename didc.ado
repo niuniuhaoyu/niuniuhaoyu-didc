@@ -1,4 +1,4 @@
-*! didc 0.1.0  2026-09-30
+*! didc 0.2.1  2026-09-30
 *! Difference-in-Discontinuities (DiDC) for Stata
 *! Picchetti, Pinto & Shinoki (2026), arXiv:2405.18531
 *!

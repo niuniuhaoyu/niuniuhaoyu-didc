@@ -1,4 +1,4 @@
-*! didc_bounds 0.1.0  2026-09-30
+*! didc_bounds 0.2.1  2026-09-30
 *! Partial identification and sensitivity analysis for the
 *! difference-in-discontinuities design.
 *! Picchetti, Pinto & Shinoki (2026), arXiv:2405.18531, Section 5.1.

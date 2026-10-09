@@ -244,7 +244,7 @@ Grembi, Nannicini & Troiano (2016)，意大利市政财政规则放松：
 | Stata `RDDID`（SSC S459586, Jonathan Dries） | 「处理组断点 − 对照组断点」的**横截面两组**版，官方描述即 *"by wrapping the rdrobust package"* | **不是**本包的设计：它没有时间差分、没有有效性检验、没有部分识别 |
 | R `rdrobust`（Cattaneo et al.） | 标准 RD 估计与推断 | **验证锚点**（对 `(ΔY, Z)` 调用即得本包的估计量） |
 | `did2s` / `did` / `csdid` 等 DiD 包 | 时间维度的 DiD | 互补；DiDC 处理的是「阈值处有混淆政策」这一 RDD 失效场景 |
-| `rd2d`（gorgeousfish） | 二维边界 RD | 无关（不同设计） |
+| `rd2d` | 二维边界 RD | 无关（不同设计） |
 
 **SSC 全量目录（3402 条）核对结论**：无 `DIDC`、无任何以 Picchetti/Grembi/DiDC 为主题的命令；`difference-in-discontinuities` 全库仅 3 处命中，全部指向 `RDDID` 的横截面版。
 

@@ -6,7 +6,7 @@
 
 [![Stata 17+](https://img.shields.io/badge/Stata-17%2B-blue.svg)](https://www.stata.com/)
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](LICENSE)
-[![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-green.svg)](CHANGELOG.md)
+[![Version: 0.2.1](https://img.shields.io/badge/Version-0.2.1-green.svg)](CHANGELOG.md)
 [![Requires: rdrobust](https://img.shields.io/badge/requires-rdrobust-informational.svg)](https://rdpackages.github.io/rdrobust/)
 
 `didc` implements **difference-in-discontinuities (DiDC)** estimation, inference,
@@ -363,3 +363,7 @@ The empirical example follows:
 ## License
 
 AGPL-3.0. See `LICENSE`.
+
+---
+
+[English](README.md) | [简体中文](README_zh.md)

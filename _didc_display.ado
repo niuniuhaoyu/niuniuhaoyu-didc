@@ -1,4 +1,4 @@
-*! _didc_display 0.1.0  2026-09-30
+*! _didc_display 0.2.1  2026-09-30
 *! Internal: print the didc result table.  Reads everything from e().
 
 program define _didc_display
